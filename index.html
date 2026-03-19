@@ -3,552 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raze Visual - Minecraft Client</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Raze Visual - Free Download & Guide</title>
+
+    <link rel="icon" type="image/png" href="image/logo.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Roboto+Mono&display=swap" rel="stylesheet">
+    
     <style>
-        :root {
-            --brand-primary: #5865F2;
-            --brand-secondary: #4752C4;
+        /* --- ГЛАВНЫЕ СТИЛИ --- */
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            display: flex; justify-content: center; align-items: center;
+            position: relative;
         }
-        body {
-            background-color: #050505;
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            margin: 0;
-            selection-background: var(--brand-primary);
+
+        /* --- ЭФФЕКТ СНЕГА --- */
+        #snow-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .glass-card:hover {
-            border-color: rgba(88, 101, 242, 0.3);
-            background: rgba(255, 255, 255, 0.04);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-        .hero-gradient {
-            background: radial-gradient(circle at 50% 50%, rgba(88, 101, 242, 0.1) 0%, transparent 80%);
-        }
-        .text-glow {
-            text-shadow: 0 0 30px rgba(88, 101, 242, 0.3);
-        }
-        .snow-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
+
         .snowflake {
-            position: absolute;
-            top: -10px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.5;
-            filter: blur(1px);
+            position: absolute; background: #fff; border-radius: 50%;
+            opacity: 0.8; pointer-events: none;
             animation: fall linear infinite;
         }
-        @keyframes fall {
-            to { transform: translateY(105vh); }
-        }
-        .auth-input {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 16px 20px;
-            width: 100%;
-            outline: none;
-            color: white;
-            transition: all 0.3s;
-        }
-        .auth-input:focus { 
-            border-color: var(--brand-primary);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 0 0 4px rgba(88, 101, 242, 0.1);
-        }
-        .hidden { display: none !important; }
-        .profile-sidebar-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 20px;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: rgba(255, 255, 255, 0.4);
-            font-weight: 500;
-        }
-        .profile-sidebar-item:hover {
-            background: rgba(255, 255, 255, 0.03);
-            color: rgba(255, 255, 255, 0.8);
-            transform: translateX(4px);
-        }
-        .profile-sidebar-item.active {
-            background: rgba(88, 101, 242, 0.1);
-            border: 1px solid rgba(88, 101, 242, 0.2);
-            color: white;
-        }
-        .brand-primary { color: var(--brand-primary); }
-        .bg-brand-primary { background-color: var(--brand-primary); }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #222; }
 
-        /* Animations */
-        @keyframes fadeUp {
+        @keyframes fall { to { transform: translateY(105vh); } }
+
+        /* --- КНОПКА ИНСТРУКЦИИ (В УГЛУ) --- */
+        .guide-trigger {
+            position: absolute; top: 25px; right: 25px;
+            z-index: 100; padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px; color: #fff;
+            font-weight: 700; font-size: 0.85rem;
+            cursor: pointer; text-transform: uppercase;
+            letter-spacing: 1.5px; transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .guide-trigger:hover {
+            background: rgba(0, 210, 255, 0.2);
+            border-color: #00d2ff; color: #00d2ff;
+            transform: scale(1.05);
+        }
+
+        /* --- ЦЕНТРАЛЬНЫЙ БЛОК --- */
+        .main-content {
+            position: relative; z-index: 10; text-align: center;
+            padding: 50px 40px; background: rgba(255, 255, 255, 0.03);
+            border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            animation: fadeInUp 0.8s ease-out;
+            width: 420px; max-width: 90%;
+        }
+
+        @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-up {
-            animation: fadeUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+        .brand-title {
+            font-weight: 900; font-size: 3.5rem;
+            text-transform: uppercase; letter-spacing: -2px;
+            margin: 0; line-height: 1;
+            background: linear-gradient(to bottom, #ffffff, #b0b0b0);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
+
+        .free-tag {
+            display: inline-block; margin: 12px 0 18px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.2rem; font-weight: 900;
+            color: #00d2ff; letter-spacing: 10px;
+            animation: neonPulse 2s infinite;
+        }
+
+        @keyframes neonPulse {
+            0%, 100% { opacity: 0.6; text-shadow: 0 0 0px #00d2ff; }
+            50% { opacity: 1; text-shadow: 0 0 15px #00d2ff; }
+        }
+
+        .brand-subtitle {
+            font-size: 0.9rem; color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 40px; text-transform: uppercase; letter-spacing: 3px;
+        }
+
+        /* --- КНОПКА СКАЧАТЬ --- */
+        .download-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 15px; padding: 18px 60px; font-size: 1.2rem; font-weight: 800;
+            color: #fff; text-decoration: none; text-transform: uppercase;
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5, #00d2ff);
+            background-size: 200% auto; border-radius: 60px;
+            box-shadow: 0 12px 35px rgba(58, 123, 213, 0.4);
+            transition: 0.4s ease; border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .download-btn:hover {
+            background-position: right center; transform: translateY(-6px);
+            box-shadow: 0 15px 45px rgba(58, 123, 213, 0.7);
+        }
+
+        /* --- МОДАЛЬНОЕ ОКНО (ИНСТРУКЦИЯ) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+            z-index: 200; display: flex;
+            justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+
+        .modal-content {
+            background: #0d0d0d; width: 650px; max-width: 95%; max-height: 90vh;
+            border-radius: 25px; border: 1px solid rgba(0, 210, 255, 0.2);
+            box-shadow: 0 0 60px rgba(0, 0, 0, 1);
+            overflow-y: auto; padding: 45px; position: relative;
+            transform: translateY(40px); transition: 0.4s ease;
+        }
+
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+
+        .close-btn {
+            position: absolute; top: 20px; right: 25px;
+            font-size: 2.5rem; color: #444; cursor: pointer;
+            background: none; border: none; transition: 0.3s;
+        }
+        .close-btn:hover { color: #ff4d4d; }
+
+        /* Текст внутри инструкции */
+        .guide-body h2 {
+            font-weight: 900; font-size: 2rem; margin: 0 0 30px;
+            text-align: center; color: #00d2ff; text-transform: uppercase;
+        }
+
+        .step-box {
+            background: rgba(255, 255, 255, 0.03); border-radius: 15px;
+            padding: 20px; margin-bottom: 20px;
+            border-left: 4px solid #3a7bd5;
+        }
+
+        .step-box strong { color: #00d2ff; font-size: 1.1rem; display: block; margin-bottom: 10px; }
         
-        .grid-bg {
-            background-image: linear-gradient(#ffffff03 1px, transparent 1px), linear-gradient(90deg, #ffffff03 1px, transparent 1px);
-            background-size: 50px 50px;
+        .path-code {
+            font-family: 'Roboto Mono', monospace; background: #222;
+            padding: 4px 10px; border-radius: 6px; color: #ffcc00; font-size: 0.9rem;
         }
 
-        .buy-btn-loading {
-            pointer-events: none;
-            opacity: 0.7;
-        }
-
-        /* Toast Notification */
-        #toast-container {
-            position: fixed;
-            bottom: 32px;
-            right: 32px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .toast {
-            background: #121212;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 16px 24px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            animation: toastIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            min-width: 300px;
-        }
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        .toast.success { border-left: 4px solid #10b981; }
-        .toast.info { border-left: 4px solid var(--brand-primary); }
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-        }
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     </style>
 </head>
 <body>
-    <div class="fixed inset-0 grid-bg pointer-events-none"></div>
-    <div id="snow" class="snow-container"></div>
 
-    <!-- Landing View -->
-    <div id="landing-view">
-        <header class="relative z-50 max-w-7xl mx-auto px-6 py-8 flex items-center justify-between">
-            <div class="flex items-center gap-12">
-                <div class="flex items-center gap-2 cursor-pointer group">
-                    <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
-                        <i data-lucide="zap" class="w-6 h-6 text-[#5865F2]"></i>
-                    </div>
-                    <span class="text-xl font-bold tracking-tight">Raze Visual</span>
-                </div>
-                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
-                    <a href="#" class="hover:text-white transition-colors">Главная</a>
-                    <a href="#" class="hover:text-white transition-colors">Тарифы</a>
-                    <div class="flex items-center gap-1 hover:text-white transition-colors cursor-pointer">
-                        <span>Документы</span>
-                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                    </div>
-                </nav>
-            </div>
-            <div class="flex items-center gap-6">
-                <div class="hidden sm:flex items-center gap-4 text-white/40">
-                    <i data-lucide="youtube" class="w-5 h-5 hover:text-white cursor-pointer transition-colors"></i>
-                    <i data-lucide="send" class="w-5 h-5 hover:text-white cursor-pointer transition-colors"></i>
-                    <i data-lucide="message-square" class="w-5 h-5 hover:text-white cursor-pointer transition-colors"></i>
-                </div>
-                <button onclick="openAuth()" class="bg-[#5865F2] px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-[#4752c4] transition-all shadow-lg shadow-[#5865F2]/20 active:scale-95">Авторизация</button>
-            </div>
-        </header>
+    <div id="snow-container"></div>
 
-        <main class="relative z-10 max-w-7xl mx-auto px-6 pt-12 pb-24">
-            <div class="glass-card rounded-[40px] p-16 relative overflow-hidden min-h-[550px] flex items-center animate-fade-up">
-                <div class="absolute inset-0 hero-gradient"></div>
-                <div class="relative z-20 max-w-2xl">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#5865F2]/10 border border-[#5865F2]/20 text-[#5865F2] text-xs font-bold mb-8">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#5865F2] animate-pulse"></span>
-                        Первый месяц подписки за 449₽
-                    </div>
-                    <h1 class="text-6xl font-bold leading-[1.1] mb-6 text-glow">Поднимите свой игровой процесс на новый уровень!</h1>
-                    <p class="text-lg text-white/60 mb-10 leading-relaxed">Уникальные возможности оптимизации и лучшие модификации для Minecraft, созданные профессионалами.</p>
-                    <div class="flex flex-wrap gap-4">
-                        <button onclick="openAuth()" class="bg-[#5865F2] px-8 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-[#4752c4] transition-all shadow-xl shadow-[#5865F2]/20 active:scale-95">
-                            <i data-lucide="download" class="w-5 h-5"></i>
-                            Купить клиент
-                        </button>
-                        <button onclick="showToast('Служба поддержки скоро свяжется с вами', 'info')" class="bg-white/10 px-8 py-4 rounded-2xl font-bold backdrop-blur-md hover:bg-white/20 transition-all border border-white/5 active:scale-95">
-                            <i data-lucide="help-circle" class="w-5 h-5"></i>
-                            Помощь
-                        </button>
-                    </div>
-                </div>
-                <!-- Decorative elements -->
-                <div class="absolute right-[-5%] top-[-5%] w-[40%] h-[60%] bg-[#5865F2]/10 blur-[100px] rounded-full animate-float"></div>
-                <div class="absolute right-10 top-20 w-64 h-80 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-sm -rotate-12 animate-float" style="animation-delay: -2s"></div>
-                <div class="absolute right-40 top-40 w-64 h-80 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-sm rotate-6 animate-float" style="animation-delay: -4s"></div>
-            </div>
+    <button class="guide-trigger" onclick="toggleModal()">Инструкция</button>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mt-32">
-                <div class="animate-fade-up" style="animation-delay: 0.1s">
-                    <div class="text-4xl font-bold mb-3">201,772+</div>
-                    <p class="text-sm text-white/40 leading-relaxed">Количество наших пользователей увеличивается каждый день</p>
-                </div>
-                <div class="animate-fade-up" style="animation-delay: 0.2s">
-                    <div class="text-4xl font-bold mb-3">100+</div>
-                    <p class="text-sm text-white/40 leading-relaxed">В нашем клиенте более 100 модулей, которые постоянно развиваются</p>
-                </div>
-                <div class="animate-fade-up" style="animation-delay: 0.3s">
-                    <div class="text-4xl font-bold mb-3">244+</div>
-                    <p class="text-sm text-white/40 leading-relaxed">Мы постоянно развиваемся. Регулярно выпускаем новые улучшения</p>
-                </div>
-                <div class="animate-fade-up" style="animation-delay: 0.4s">
-                    <div class="text-4xl font-bold mb-3">750 дней</div>
-                    <p class="text-sm text-white/40 leading-relaxed">Более полутора лет на рынке. Продолжаем расти и радовать вас</p>
-                </div>
-            </div>
-        </main>
+    <div class="main-content">
+        <h1 class="brand-title">Raze Visual</h1>
+        <div class="free-tag">FREE</div>
+        <p class="brand-subtitle">Official Download Portal</p>
+        
+        <a href="https://workupload.com/file/kPmhqEq2zWn" class="download-btn">
+            <span style="font-size: 1.5rem;">⬇</span> Скачать
+        </a>
     </div>
 
-    <!-- Profile View (Hidden by default) -->
-    <div id="profile-view" class="hidden min-h-screen flex flex-col">
-        <header class="max-w-7xl mx-auto w-full px-6 py-8 flex items-center justify-between">
-            <div class="flex items-center gap-2 cursor-pointer group" onclick="logout()">
-                <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10">
-                    <i data-lucide="zap" class="w-6 h-6 text-[#5865F2]"></i>
-                </div>
-                <span class="text-xl font-bold tracking-tight">Raze Visual</span>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="text-right">
-                    <div class="text-sm font-bold">bedvars</div>
-                    <div class="text-[10px] text-[#5865F2] font-bold uppercase tracking-wider">ПОЛЬЗОВАТЕЛЬ</div>
-                </div>
-                <div class="relative">
-                    <img id="profile-avatar" src="https://picsum.photos/seed/minecraft/200/200" class="w-10 h-10 rounded-xl border border-white/10 object-cover">
-                    <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-[#050505] rounded-full"></div>
-                </div>
-            </div>
-        </header>
-        <main class="flex-1 max-w-7xl mx-auto w-full px-6 py-12 flex flex-col md:flex-row gap-12">
-            <aside class="w-full md:w-64 flex flex-col gap-2">
-                <h2 class="text-2xl font-bold mb-6 px-4">Мой профиль</h2>
-                <div id="tab-account" class="profile-sidebar-item active" onclick="setTab('account')">
-                    <i data-lucide="user" class="w-5 h-5"></i>
-                    <span>Аккаунт</span>
-                </div>
-                <div id="tab-purchase" class="profile-sidebar-item" onclick="setTab('purchase')">
-                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-                    <span>Покупка клиента</span>
-                </div>
-                <div id="tab-extra" class="profile-sidebar-item" onclick="setTab('extra')">
-                    <i data-lucide="layers" class="w-5 h-5"></i>
-                    <span>Дополнительно</span>
-                </div>
-                <div class="mt-auto pt-8">
-                    <div class="profile-sidebar-item text-red-400 hover:bg-red-400/5" onclick="logout()">
-                        <i data-lucide="log-out" class="w-5 h-5"></i>
-                        <span>Выйти</span>
-                    </div>
-                </div>
-            </aside>
-            
-            <!-- Account Content -->
-            <div id="content-account" class="flex-1 animate-fade-up">
-                <div class="flex flex-col sm:flex-row items-center gap-8 mb-16">
-                    <div class="relative group cursor-pointer" onclick="document.getElementById('avatar-upload').click()">
-                        <img id="main-avatar" src="https://picsum.photos/seed/minecraft/200/200" class="w-24 h-24 rounded-[28px] object-cover border border-white/10 shadow-2xl">
-                        <div class="absolute inset-0 bg-black/60 rounded-[28px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <i data-lucide="camera" class="w-6 h-6"></i>
-                        </div>
-                        <input type="file" id="avatar-upload" class="hidden" accept="image/*" onchange="changeAvatar(event)">
-                    </div>
-                    <div class="text-center sm:text-left">
-                        <h1 class="text-4xl font-bold mb-2">Привет, bedvars!</h1>
-                        <div class="flex flex-wrap justify-center sm:justify-start gap-6 text-sm text-white/40">
-                            <div class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> 25pro2vz@gmail.com</div>
-                            <div class="flex items-center gap-2"><i data-lucide="hash" class="w-4 h-4"></i> 130515</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="space-y-2">
-                        <div class="glass-card p-6 rounded-2xl flex items-center justify-between">
-                            <span class="text-white/40 text-sm">Дата регистрации</span>
-                            <span class="font-semibold">21.05.2025 г, 06:45</span>
-                        </div>
-                        <div class="glass-card p-6 rounded-2xl flex items-center justify-between">
-                            <span class="text-white/40 text-sm">Ваша роль</span>
-                            <span class="text-[#5865F2] font-bold tracking-wide">ПОЛЬЗОВАТЕЛЬ</span>
-                        </div>
-                        <div class="glass-card p-6 rounded-2xl flex items-center justify-between">
-                            <div class="flex items-center gap-2 text-white/40 text-sm">
-                                <span>HWID</span>
-                                <i data-lucide="info" class="w-4 h-4"></i>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <span class="text-white/20 text-sm">Не привязан</span>
-                                <button class="px-4 py-2 bg-white/5 rounded-lg text-[10px] font-bold text-white/20 cursor-not-allowed border border-white/5">СБРОСИТЬ</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="glass-card p-10 rounded-[40px] flex flex-col items-center justify-center text-center">
-                        <div class="relative w-32 h-32 mb-8">
-                            <svg class="w-full h-full -rotate-90">
-                                <circle cx="64" cy="64" r="60" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="8" />
-                                <circle cx="64" cy="64" r="60" fill="none" stroke="#5865F2" stroke-width="8" stroke-dasharray="377" stroke-dashoffset="377" class="transition-all duration-1000" />
-                            </svg>
-                            <div class="absolute inset-0 flex items-center justify-center text-4xl font-bold">0</div>
-                        </div>
-                        <div class="text-xl font-bold mb-2">Статус подписки</div>
-                        <div class="text-sm text-white/40">У вас нет активной подписки</div>
-                    </div>
-                </div>
-            </div>
+    <div class="modal-overlay" id="guideModal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <button class="close-btn" onclick="toggleModal()">&times;</button>
+            <div class="guide-body">
+                <h2>🛠 Инструкция по установке</h2>
+                <p style="text-align: center; color: #888; margin-bottom: 30px;">Следуйте шагам для правильной работы Raze Visual</p>
 
-            <!-- Purchase Content -->
-            <div id="content-purchase" class="flex-1 hidden animate-fade-up">
-                <div class="flex items-center justify-between mb-12">
-                    <h1 class="text-4xl font-bold">Магазин</h1>
-                    <div class="text-sm text-white/40">Выберите подходящий тариф</div>
+                <div class="step-box">
+                    <strong>Шаг 1: Подготовка Java</strong>
+                    Для работы актуальных версий Minecraft и мода Raze Visual требуется Java 17.
+                    <p style="margin: 10px 0 0; font-size: 0.9rem; opacity: 0.8;">Убедитесь, что в настройках вашего лаунчера (TLauncher, Prism, MultiMC и др.) выбрана именно Java 17.</p>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-                    <!-- Card 1 -->
-                    <div class="glass-card p-10 rounded-[40px] flex flex-col items-center text-center relative overflow-hidden group">
-                        <div class="bg-[#5865F2]/10 px-4 py-1.5 rounded-full text-[10px] font-bold text-[#5865F2] mb-8 uppercase tracking-widest">Delta БЕТА</div>
-                        <div class="text-5xl font-bold mb-2">949 ₽</div>
-                        <div class="text-xs text-white/40 mb-8 font-medium uppercase tracking-widest">Навсегда</div>
-                        <p class="text-sm text-white/40 mb-10 leading-relaxed">Ранний доступ к новым модулям, обновлениям клиента и эксклюзивным функциям.</p>
-                        <div class="w-full space-y-4 mb-10 text-left">
-                            <div class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#5865F2]"></i> Неограниченный доступ</div>
-                            <div class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#5865F2]"></i> Обновления навсегда</div>
-                            <div class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#5865F2]"></i> Приоритетная поддержка</div>
-                        </div>
-                        <button onclick="buyProduct(this, 'Delta БЕТА')" class="w-full bg-[#5865F2] py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-[#4752c4] transition-all shadow-lg shadow-[#5865F2]/20 active:scale-95">
-                            Купить <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                    <!-- Card 2 -->
-                    <div class="glass-card p-10 rounded-[40px] flex flex-col items-center text-center relative overflow-hidden group">
-                        <div class="bg-[#5865F2]/10 px-4 py-1.5 rounded-full text-[10px] font-bold text-[#5865F2] mb-8 uppercase tracking-widest">Delta Навсегда</div>
-                        <div class="text-5xl font-bold mb-2">799 ₽</div>
-                        <div class="text-xs text-white/40 mb-8 font-medium uppercase tracking-widest">Навсегда</div>
-                        <p class="text-sm text-white/40 mb-10 leading-relaxed">Вы получаете клиент абсолютно навсегда, включая все последующие обновления.</p>
-                        <div class="w-full space-y-4 mb-10 text-left">
-                            <div class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#5865F2]"></i> Неограниченный доступ</div>
-                            <div class="flex items-center gap-3 text-sm"><i data-lucide="check" class="w-4 h-4 text-[#5865F2]"></i> Обновления навсегда</div>
-                            <div class="flex items-center gap-3 text-sm text-white/20"><i data-lucide="x" class="w-4 h-4"></i> Приоритетная поддержка</div>
-                        </div>
-                        <button onclick="buyProduct(this, 'Delta Навсегда')" class="w-full bg-[#5865F2] py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-[#4752c4] transition-all shadow-lg shadow-[#5865F2]/20 active:scale-95">
-                            Купить <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                    <!-- Card 3 -->
-                    <div class="glass-card p-10 rounded-[40px] flex flex-col items-center text-center relative overflow-hidden group">
-                        <div class="absolute top-6 right-[-40px] bg-red-500 text-white text-[10px] font-bold px-12 py-1.5 rotate-45 shadow-xl">ХИТ</div>
-                        <div class="bg-[#5865F2]/10 px-4 py-1.5 rounded-full text-[10px] font-bold text-[#5865F2] mb-8 uppercase tracking-widest">Delta Месяц</div>
-                        <div class="text-5xl font-bold mb-2">449 ₽</div>
-                        <div class="text-xs text-white/40 mb-8 font-medium uppercase tracking-widest">30 Дней</div>
-                        <p class="text-sm text-white/40 mb-10 leading-relaxed">Идеальный выбор для тех, кто хочет попробовать все возможности клиента.</p>
-                        <button onclick="buyProduct(this, 'Delta Месяц')" class="w-full bg-[#5865F2] py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-[#4752c4] transition-all shadow-lg shadow-[#5865F2]/20 active:scale-95">
-                            Купить <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Extra Content -->
-            <div id="content-extra" class="flex-1 hidden animate-fade-up">
-                <h1 class="text-4xl font-bold mb-12">Дополнительно</h1>
-                <div class="glass-card p-12 rounded-[40px] text-center max-w-2xl">
-                    <div class="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-white/10">
-                        <i data-lucide="layers" class="w-10 h-10 text-white/20"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Раздел в разработке</h3>
-                    <p class="text-white/40 leading-relaxed">Мы работаем над новыми функциями. Скоро здесь появятся настройки HWID, история платежей и многое другое.</p>
+                <div class="step-box">
+                    <strong>Шаг 2: Установка Fabric API</strong>
+                    Raze Visual работает на базе Fabric, поэтому наличие вспомогательного мода API обязательно.
+                    <ul style="margin: 10px 0; padding-left: 20px; font-size: 0.9rem; opacity: 0.8;">
+                        <li>Скачайте актуальную версию Fabric API для 1.16.5.</li>
+                        <li>Переместите .jar файл в папку mods.</li>
+                    </ul>
+                    Путь: <span class="path-code">%appdata%\.minecraft\mods</span>
                 </div>
-            </div>
-        </main>
-    </div>
 
-    <!-- Auth Modal -->
-    <div id="auth-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-6 bg-black/80 backdrop-blur-md">
-        <div class="bg-[#0a0a0a] border border-white/10 rounded-[40px] w-full max-w-5xl h-[650px] flex overflow-hidden relative shadow-2xl">
-            <button onclick="closeAuth()" class="absolute top-8 right-8 z-50 p-2 hover:bg-white/5 rounded-full transition-all">
-                <i data-lucide="x" class="w-6 h-6 text-white/40"></i>
-            </button>
-            <div class="w-1/2 relative hidden md:block">
-                <img src="https://picsum.photos/seed/mc-world/800/1200" class="w-full h-full object-cover opacity-40">
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
-                <div class="absolute bottom-16 left-16 right-16">
-                    <h3 class="text-4xl font-bold leading-tight">Наслаждайтесь игрой с Raze Visual</h3>
+                <div class="step-box">
+                    <strong>Шаг 3: Установка основных папок</strong>
+                    Найдите папки <b style="color:white;">Raze Visual</b> и <b style="color:white;">Raze VisualHelper</b>.
+                    <p style="margin: 10px 0 0; font-size: 0.9rem; opacity: 0.8;">Скопируйте обе эти папки целиком и вставьте их в ту же директорию <span class="path-code">mods</span>.</p>
                 </div>
-            </div>
-            <div class="w-full md:w-1/2 p-16 flex flex-col justify-center">
-                <h2 id="auth-title" class="text-4xl font-bold mb-2">Авторизация</h2>
-                <p id="auth-sub" class="text-white/40 mb-12 text-sm">Войдите, чтобы попасть в свой профиль</p>
-                <div class="space-y-5">
-                    <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-white/20 uppercase tracking-widest ml-4">Логин</label>
-                        <input type="text" placeholder="Введите логин" class="auth-input">
-                    </div>
-                    <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-white/20 uppercase tracking-widest ml-4">Пароль</label>
-                        <input type="password" placeholder="••••••••" class="auth-input">
-                    </div>
-                    <button onclick="login()" class="bg-[#5865F2] w-full py-5 rounded-2xl font-bold hover:bg-[#4752c4] transition-all shadow-xl shadow-[#5865F2]/20 mt-4 active:scale-95">Войти</button>
-                </div>
-                <div class="mt-10 text-center text-xs text-white/40">
-                    Нет аккаунта? <button onclick="toggleAuth()" class="text-white font-bold hover:underline ml-1">Регистрация</button>
+
+                <div class="step-box">
+                    <strong>Шаг 4: Запуск игры</strong>
+                    Откройте лаунчер, выберите версию <b style="color:#00d2ff;">1.16.5 Fabric</b> и нажмите «Играть».
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="toast-container"></div>
-
     <script>
-        lucide.createIcons();
-
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast ' + type;
-            const icon = type === 'success' ? 'check-circle' : 'info';
-            toast.innerHTML = '<i data-lucide="' + icon + '" class="w-5 h-5"></i><span>' + message + '</span>';
-            container.appendChild(toast);
-            lucide.createIcons();
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(50px)';
-                toast.style.transition = 'all 0.4s';
-                setTimeout(() => toast.remove(), 400);
-            }, 4000);
-        }
-
-        function openAuth() { document.getElementById('auth-modal').classList.remove('hidden'); }
-        function closeAuth() { document.getElementById('auth-modal').classList.add('hidden'); }
-        
-        let isLogin = true;
-        function toggleAuth() {
-            isLogin = !isLogin;
-            document.getElementById('auth-title').innerText = isLogin ? 'Авторизация' : 'Регистрация';
-            document.getElementById('auth-sub').innerText = isLogin ? 'Войдите, чтобы попасть в свой профиль' : 'Создайте аккаунт, чтобы начать';
-        }
-
-        function login() { 
-            const btn = event.target;
-            const originalText = btn.innerText;
-            btn.innerText = 'Вход...';
-            btn.classList.add('buy-btn-loading');
-            
-            setTimeout(() => {
-                document.getElementById('auth-modal').classList.add('hidden');
-                document.getElementById('landing-view').classList.add('hidden');
-                document.getElementById('profile-view').classList.remove('hidden');
-                setTab('account');
-                btn.innerText = originalText;
-                btn.classList.remove('buy-btn-loading');
-                showToast('Добро пожаловать, bedvars!', 'success');
-            }, 800);
-        }
-
-        function logout() {
-            document.getElementById('landing-view').classList.remove('hidden');
-            document.getElementById('profile-view').classList.add('hidden');
-            showToast('Вы вышли из аккаунта');
-        }
-
-        function setTab(tabName) {
-            document.querySelectorAll('.profile-sidebar-item').forEach(item => item.classList.remove('active'));
-            document.getElementById('tab-' + tabName).classList.add('active');
-            
-            document.getElementById('content-account').classList.add('hidden');
-            document.getElementById('content-purchase').classList.add('hidden');
-            document.getElementById('content-extra').classList.add('hidden');
-            document.getElementById('content-' + tabName).classList.remove('hidden');
-        }
-
-        function changeAvatar(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('main-avatar').src = e.target.result;
-                    document.getElementById('profile-avatar').src = e.target.result;
-                    showToast('Аватар успешно обновлен', 'success');
-                }
-                reader.readAsDataURL(file);
+        // ГЕНЕРАЦИЯ СНЕГА
+        function createSnow() {
+            const container = document.getElementById('snow-container');
+            const flakeCount = 100;
+            for (let i = 0; i < flakeCount; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                const size = Math.random() * 4 + 2 + 'px';
+                flake.style.width = size; flake.style.height = size;
+                flake.style.left = Math.random() * 100 + 'vw';
+                flake.style.animationDuration = Math.random() * 3 + 2 + 's';
+                flake.style.opacity = Math.random();
+                flake.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(flake);
             }
         }
+        createSnow();
 
-        function buyProduct(btn, name) {
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Обработка...';
-            btn.classList.add('buy-btn-loading');
-            lucide.createIcons();
-
-            setTimeout(() => {
-                btn.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i> Переход к оплате...';
-                btn.style.backgroundColor = '#10b981';
-                lucide.createIcons();
-                
-                setTimeout(() => {
-                    showToast('Вы выбрали: ' + name + '. Перенаправление...', 'success');
-                    setTimeout(() => {
-                        btn.innerHTML = originalContent;
-                        btn.style.backgroundColor = '';
-                        btn.classList.remove('buy-btn-loading');
-                        lucide.createIcons();
-                    }, 1000);
-                }, 1500);
-            }, 1000);
-        }
-
-        // Snow
-        const snow = document.getElementById('snow');
-        for(let i=0; i<60; i++) {
-            const flake = document.createElement('div');
-            flake.className = 'snowflake';
-            flake.style.left = Math.random() * 100 + '%';
-            flake.style.width = flake.style.height = (Math.random() * 3 + 2) + 'px';
-            flake.style.animationDuration = (Math.random() * 8 + 4) + 's';
-            flake.style.animationDelay = Math.random() * 5 + 's';
-            snow.appendChild(flake);
-        }
+        // ЛОГИКА ОКНА
+        const modal = document.getElementById('guideModal');
+        function toggleModal() { modal.classList.toggle('active'); }
+        function closeModal(e) { if (e.target === modal) toggleModal(); }
+        
+        // Закрытие на ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) toggleModal();
+        });
     </script>
 </body>
 </html>
